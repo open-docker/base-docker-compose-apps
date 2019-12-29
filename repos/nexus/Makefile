@@ -26,6 +26,8 @@ down:
 	$(DC) down
 config:
 	$(DC) config
+start-fg:
+	$(DC) up
 
 sh:
 	$(DK_EXEC) $(PROJ_NAME) sh
