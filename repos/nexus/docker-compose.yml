@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
     nexus:
         restart: always
@@ -11,5 +11,17 @@ services:
             - JAVA_MIN_HEAP=1200m
         volumes:
             - ./data/:/nexus-data/:z
+        # ports:
+        #     - ${NEXUS_PORT:-8081}:8081
+
+    nginx:
+        image: nginx:latest
         ports:
-            - ${NEXUS_PORT:-8081}:8081
+            - ${NEXUS_PORT:-8081}:80
+        volumes:
+            - ./conf/nginx/:/etc/nginx/conf.d/
+        command: /bin/bash -c "nginx -g 'daemon off;'"
+        links:
+            - nexus
+        ulimits:
+            nproc: 655350
