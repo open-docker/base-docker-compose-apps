@@ -18,12 +18,16 @@ PROJ_NAME := $(shell basename $(CURDIR))
 # ####################################
 # Dashboard AREA
 # ####################################
-start: init-dir
+start: up
+stop: down
+up: init-dir
 	$(DC) up -d
-stop:
+down:
 	$(DC) down
 config:
 	$(DC) config
+start-fg:
+	$(DC) up
 
 sh:
 	$(DK_EXEC) $(PROJ_NAME) sh
