@@ -140,7 +140,7 @@ define doSubListPull
 	for xy in $(1); do \
 		x=`echo "$${xy}" | $(FCUT) -f1`; \
 		y=`echo "$${xy}" | $(FCUT) -f2`; \
-		git subtree pull --prefix=$(2)/$$y $$x $(BRANCH) --squash; \
+		git subtree pull --prefix=$(2)/$$y $$x $(BRANCH) --squash -m $(GUP_MSG); \
 	done;
 endef
 
