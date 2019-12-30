@@ -1,2 +1,6 @@
-# influxdb-docker-compose-cluster
-influxdb-docker-compose-cluster
+## Influxdb
+
+
+---
+## 参考
+- https://hub.qiniu.com/store/library/influxdb
