@@ -2,14 +2,7 @@
 
 # DATA-DIR-BEGIN
 data
-data/sz-zk1
-data/sz-zk2
-data/sz-zk3
-
-../../../log/sz-zk1
-../../../log/sz-zk2
-../../../log/sz-zk3
-
+log
 # DATA-DIR-END
 
 
