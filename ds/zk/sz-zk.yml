@@ -26,15 +26,13 @@ services:
     hostname: sz-zk1
     container_name: sz-zk1
     ports:
-      - 2181:2181
+      - ${ZK1_PORT:-2181}:2181
     volumes:
-      - ./data/sz-zk1:/data
-      - ../../../log/sz-zk1:/datalog
+      - ${XDC_ZK_DATA:-./data}/sz-zk1:/data
+      - ${XDC_ZK_LOG:-./log}/sz-zk1:/datalog
     environment:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=sz-zk1:2888:3888 server.2=sz-zk2:2888:3888 server.3=sz-zk3:2888:3888
-    networks:
-      - zk-cluster
 
   sz-zk2:
     image: zookeeper:3.4
@@ -42,15 +40,13 @@ services:
     hostname: sz-zk2
     container_name: sz-zk2
     ports:
-      - 2182:2181
+      - ${ZK2_PORT:-2182}:2181
     volumes:
-      - ./data/sz-zk2:/data
-      - ../../../log/sz-zk2:/datalog
+      - ${XDC_ZK_DATA:-./data}/sz-zk2:/data
+      - ${XDC_ZK_LOG:-./log}/sz-zk2:/datalog
     environment:
       ZOO_MY_ID: 2
       ZOO_SERVERS: server.1=sz-zk1:2888:3888 server.2=sz-zk2:2888:3888 server.3=sz-zk3:2888:3888
-    networks:
-      - zk-cluster
 
   sz-zk3:
     image: zookeeper:3.4
@@ -58,17 +54,10 @@ services:
     hostname: sz-zk3
     container_name: sz-zk3
     ports:
-      - 2183:2181
+      - ${ZK3_PORT:-2183}:2181
     volumes:
-      - ./data/sz-zk3:/data
-      - ../../../log/sz-zk3:/datalog
+      - ${XDC_ZK_DATA:-./data}/sz-zk3:/data
+      - ${XDC_ZK_LOG:-./log}/sz-zk3:/datalog
     environment:
       ZOO_MY_ID: 3
       ZOO_SERVERS: server.1=sz-zk1:2888:3888 server.2=sz-zk2:2888:3888 server.3=sz-zk3:2888:3888
-    networks:
-      - zk-cluster
-
-
-networks:
-  zk-cluster:
-    driver: bridge

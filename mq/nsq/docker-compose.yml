@@ -52,8 +52,8 @@ services:
   #     - ./demo:/demo
   #     - ../../../../log/nsq/nsq-02:/var/log/nsq
   #     - ../../../..:/project
-  #   ports:
-  #     - "52202:22"
+  #   # ports:
+  #   #   - "52202:22"
 
   # nsq-03:
   #   privileged: true
@@ -67,6 +67,6 @@ services:
   #     - ./demo:/demo
   #     - ../../../../log/nsq/nsq-03:/var/log/nsq
   #     - ../../../..:/project
-  #   ports:
-  #     - "52203:22"
+  #   # ports:
+  #   #   - "52203:22"
 
