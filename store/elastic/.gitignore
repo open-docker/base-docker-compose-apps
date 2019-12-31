@@ -1,5 +1,6 @@
 # 数据目录
 data
+log
 
 # 生产配置
 *.prod.yml
