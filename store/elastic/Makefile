@@ -2,13 +2,12 @@
 # ####################################
 # Config AREA
 # ####################################
-SVC_HOST := 127.0.0.1
-
-ES_URL_BASE := http://$(SVC_HOST):9200
-
 
 include ./.env
 -include ../../yh-prod.env
+
+SVC_HOST := 127.0.0.1
+ES_URL_BASE := http://$(SVC_HOST):${ELASTIC_ES_PORT}
 
 FEATURES := mini beats other
 YAML_FILE_GROUPS := $(foreach x,$(FEATURES),-f elastic-$(x).yml)
