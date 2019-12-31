@@ -17,9 +17,23 @@ DC	:= docker-compose
 # Config AREA
 # ####################################
 SVC_HOST := $(shell hostname -a)
+
+include ./.env
+-include ../../yh-prod.env
+
 SERVER_RSS := rs1 rs2 conf shard
 YAML_FILE_GROUPS := $(foreach x,$(SERVER_RSS),-f mongo-$(x).yml)
+
+DK	:= docker
+DC	:= docker-compose $(YAML_FILE_GROUPS)
+
+DATA_SUF = $(shell date +"%Y.%m.%d.%H.%M.%S")
+
+PROJ_NAME := $(shell basename $(CURDIR))
+
 APP := mongo-router
+CMD := bash
+
 DK_EXEC := $(DK) exec -it $(APP)
 
 
@@ -27,13 +41,22 @@ DK_EXEC := $(DK) exec -it $(APP)
 # Dashboard AREA
 # ####################################
 status: status-port
-start: ginit start-servers
-stop: stop-servers
-test: test-core
-ginit: init-dir
+start: up
+stop: down
+up: init-dir
+	$(DC) up -d
+down:
+	$(DC) down
+config:
+	$(DC) config
+start-fg: init-dir
+	$(DC) up
 
-bash:
-	docker exec -it mongo-r1-s1 bash
+sh:
+	docker exec -it mongo-r1-s1 $(CMD)
+bash: sh
+
+test: test-core
 
 
 # ####################################
@@ -50,29 +73,18 @@ status-port:
 # ####################################
 init-dir:
 	# 创建数据目录
-	for x in $(shell sed -n "/# DATA-DIR-BEGIN/,/# DATA-DIR-END/p" .gitignore | grep -v "#"); do \
-		echo "verify dir $$x"; \
-		[ -d "$$x" ] || mkdir -p "$$x"; \
+	# 创建数据目录(-dLf), 也可以直接-e来判存
+	$(DC) config | grep ":rw$$" | grep -o " /[^:]*" | grep "/[^.]*$$" | grep -o "[^ ]*" | while read x; do \
+		echo "verify dir/link $$x"; \
+		[ -d "$$x" -o -L "$$x" -o -f "$$x" ] || mkdir -p "$$x"; \
+		echo $$x; \
 	done;
 	# 给集群脚本文件加上读、执行权限
 	find scripts -name "*" -exec chmod +r {} \;
 	find scripts -name "*.sh" -exec chmod +x {} \;
 	# log目录可写
-	chmod o+w ../../../log/mongo
-
-
-# ####################################
-#　Server Group AREA
-# ####################################
-start-servers:
-	docker-compose $(YAML_FILE_GROUPS) up -d
-stop-servers:
-	docker-compose $(YAML_FILE_GROUPS) down
-
-
-# ####################################
-# Debug AREA
-# ####################################
+	# [ ! -d ./log ] || chmod o+w ./log
+	# [ ! -d "${XDC_MONGO_MONGOS_LOG}" ] || chmod o+w "${XDC_MONGO_MONGOS_LOG}"
 
 
 # ####################################

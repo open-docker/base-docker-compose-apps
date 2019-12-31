@@ -24,7 +24,7 @@
 # ####################################
 
 
-version: '2.2'
+version: '3'
 services:
   es01:
     image: ${ES_IMG}
@@ -42,11 +42,10 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ./data/${ES_01}:/usr/share/elasticsearch/data
+      - ${XDC_ELASTIC_DATA:-./data}/${ES_01}:/usr/share/elasticsearch/data
     ports:
-      - ${DBG_ES_PORT}:9200
-    networks:
-      - ${NETWORK_MAIN}
+      - ${ELASTIC_ES_PORT:-9200}:9200
+
   es02:
     image: ${ES_IMG}
     hostname: ${ES_02}
@@ -63,9 +62,8 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ./data/${ES_02}:/usr/share/elasticsearch/data
-    networks:
-      - ${NETWORK_MAIN}
+      - ${XDC_ELASTIC_DATA:-./data}/${ES_02}:/usr/share/elasticsearch/data
+
   es03:
     image: ${ES_IMG}
     hostname: ${ES_03}
@@ -82,9 +80,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ./data/${ES_03}:/usr/share/elasticsearch/data
-    networks:
-      - ${NETWORK_MAIN}
+      - ${XDC_ELASTIC_DATA:-./data}/${ES_03}:/usr/share/elasticsearch/data
 
   kibana:
     image: ${KIBANA_IMG}
@@ -93,10 +89,10 @@ services:
     environment:
       SERVER_NAME: localhost
     # ports:
-    #   - ${DBG_KIBANA_PORT}:5601
+    #   - ${ELASTIC_KIBANA_PORT:-5601}:5601
     volumes:
       - ./conf/kibana.yml:/usr/share/kibana/config/kibana.yml
-      - ./logs:/var/log
+      # - ./logs:/var/log
     links:
       - ${ES_01}
       - ${ES_02}
@@ -105,13 +101,11 @@ services:
       memlock:
         soft: -1
         hard: -1
-    networks:
-      - ${NETWORK_MAIN}
 
   nginx:
     image: ${NGINX_IMG}
     ports:
-      - ${INGRESS_PORT}:80
+      - ${ELASTIC_INGRESS_PORT:-8056}:80
     volumes:
       - ./conf/nginx/:/etc/nginx/conf.d/
     command: ${NGINX_CMD}
@@ -119,13 +113,6 @@ services:
       - kibana
     ulimits:
       nproc: 655350
-    networks:
-      - ${NETWORK_MAIN}
-      - ${NETWORK_INGRESS}
-
-networks:
-  elastic:
-  ingress:
 
 
 # ####################################

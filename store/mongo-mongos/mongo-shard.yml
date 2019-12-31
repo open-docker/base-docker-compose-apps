@@ -6,7 +6,7 @@ services:
     hostname: mongo-router
     container_name: mongo-router
     ports:
-      - 27017:27017
+      - ${MONGO_MONGOS_PORT:-27017}:27017
     external_links:
       - mongo-rs1-setup
       - mongo-rs2-setup
