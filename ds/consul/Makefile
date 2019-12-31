@@ -12,6 +12,7 @@ SELF_DO := make --no-print-directory -C .
 DATA_SUF = $(shell date +"%Y.%m.%d.%H.%M.%S")
 
 include ./.env
+-include ../../yh-prod.env
 
 PROJ_NAME := $(shell basename $(CURDIR))
 
@@ -21,12 +22,16 @@ CMD := bash
 # ####################################
 # Dashboard AREA
 # ####################################
-start: init-dir
+start: up
+stop: down
+up: init-dir
 	$(DC) up -d
-stop:
+down:
 	$(DC) down
 config:
 	$(DC) config
+start-fg: init-dir
+	$(DC) up
 
 bash: sh
 sh: sh1
@@ -82,17 +87,12 @@ kv-delete:
 # 	init-dir: 
 # ####################################
 init-dir:
-	# 创建数据目录
-	for x in $(shell sed -n "/# DATA-DIR-BEGIN/,/# DATA-DIR-END/p" .gitignore | grep -v "#"); do \
-		echo "verify dir $$x"; \
-		[ -d "$$x" ] || mkdir -p "$$x"; \
+	# 创建数据目录(-dLf), 也可以直接-e来判存
+	$(DC) config | grep ":rw$$" | grep -o " /[^:]*" | grep "/[^.]*$$" | grep -o "[^ ]*" | while read x; do \
+		echo "verify dir/link $$x"; \
+		[ -d "$$x" -o -L "$$x" -o -f "$$x" ] || mkdir -p "$$x"; \
+		echo $$x; \
 	done;
-	# 给集群配置文件加上读权限，否则会因用户id不同，导致配置读取不生效
-	find conf -name "*.cnf" -exec chmod +r {} \;
-	# log目录可写
-	chmod o+w ../../../../log/$(PROJ_NAME)
-	[ -L log ] || ln -s ../../../../log/$(PROJ_NAME) log
-
 
 download:
 	for x in `cat stub/downloads/url.lst | grep -v "^#"`; do \
