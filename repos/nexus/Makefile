@@ -12,7 +12,7 @@ DATA_SUF = $(shell date +"%Y.%m.%d.%H.%M.%S")
 
 PROJ_NAME := $(shell basename $(CURDIR))
 
-EXEC := bash
+CMD := bash
 
 include ./.env
 -include ../../yh-prod.env
@@ -33,7 +33,7 @@ start-fg: init-dir
 	$(DC) up
 
 sh:
-	$(DK_EXEC) $(PROJ_NAME) $(EXEC)
+	$(DK_EXEC) $(PROJ_NAME) $(CMD)
 bash: sh
 
 rebuild-then-start: stop init-dir
