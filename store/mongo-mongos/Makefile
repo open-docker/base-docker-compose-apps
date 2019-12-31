@@ -26,7 +26,6 @@ YAML_FILE_GROUPS := $(foreach x,$(SERVER_RSS),-f mongo-$(x).yml)
 
 DK	:= docker
 DC	:= docker-compose $(YAML_FILE_GROUPS)
-DK_EXEC := docker exec -it
 
 DATA_SUF = $(shell date +"%Y.%m.%d.%H.%M.%S")
 

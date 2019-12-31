@@ -30,12 +30,12 @@ services:
     volumes:
       - ./conf/gtid/yh-master.cnf:/etc/mysql/conf.d/yh-master.cnf
       - ./conf/nodes/g1-s1.cnf:/etc/mysql/conf.d/yh-node-id.cnf
-      - ./data/mysql-g1-s1:/var/lib/mysql
-      - ../../../log/mysql:/var/log/mysql
+      - ${XDC_MYSQL_GTID_DATA:-./data}/mysql-g1-s1:/var/lib/mysql
+      - ${XDC_MYSQL_GTID_LOG:-./log}/mysql:/var/log/mysql
     ports:
-      - 3316:3306
+      - ${MYSQL_G1_S1_PORT:-3316}:3306
     environment:
-      - "MYSQL_ROOT_PASSWORD=${MASTER_PASSWD}"
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_MASTER_PASSWD}"
     networks:
       - mysql-cluster-g1
 
@@ -49,12 +49,12 @@ services:
     volumes:
       - ./conf/gtid/yh-slave.cnf:/etc/mysql/conf.d/yh-slave.cnf
       - ./conf/nodes/g1-s2.cnf:/etc/mysql/conf.d/yh-node-id.cnf
-      - ./data/mysql-g1-s2:/var/lib/mysql
-      - ../../../log/mysql:/var/log/mysql
+      - ${XDC_MYSQL_GTID_DATA:-./data}/mysql-g1-s2:/var/lib/mysql
+      - ${XDC_MYSQL_GTID_LOG:-./log}/mysql:/var/log/mysql
     ports:
-      - 3317:3306
+      - ${MYSQL_G1_S2_PORT:-3317}:3306
     environment:                           
-      - "MYSQL_ROOT_PASSWORD=${SLAVE_PASSWD}"
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_SLAVE_PASSWD}"
     networks:
       - mysql-cluster-g1
 
@@ -68,12 +68,12 @@ services:
     volumes:
       - ./conf/gtid/yh-slave.cnf:/etc/mysql/conf.d/yh-slave.cnf
       - ./conf/nodes/g1-s3.cnf:/etc/mysql/conf.d/yh-node-id.cnf
-      - ./data/mysql-g1-s3:/var/lib/mysql
-      - ../../../log/mysql:/var/log/mysql
+      - ${XDC_MYSQL_GTID_DATA:-./data}/mysql-g1-s3:/var/lib/mysql
+      - ${XDC_MYSQL_GTID_LOG:-./log}/mysql:/var/log/mysql
     ports:
-      - 3318:3306
+      - ${MYSQL_G1_S3_PORT:-3318}:3306
     environment:                           
-      - "MYSQL_ROOT_PASSWORD=${SLAVE_PASSWD}"
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_SLAVE_PASSWD}"
     networks:
       - mysql-cluster-g1
 
