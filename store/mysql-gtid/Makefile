@@ -64,13 +64,10 @@ start-fg: init-dir
 	$(DC) up
 
 sh:
-	$(DK_EXEC) $(PROJ_NAME) $(CMD)
+	docker exec -it mysql-g1-s1 $(CMD)
 bash: sh
 
 test: test-core
-
-bash:
-	docker exec -it mysql-g1-s1 $(CMD)
 
 
 # ####################################

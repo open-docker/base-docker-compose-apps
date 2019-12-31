@@ -31,7 +31,7 @@ services:
       - ./conf/gtid/yh-master.cnf:/etc/mysql/conf.d/yh-master.cnf
       - ./conf/nodes/g1-s1.cnf:/etc/mysql/conf.d/yh-node-id.cnf
       - ${XDC_MYSQL_GTID_DATA:-./data}/mysql-g1-s1:/var/lib/mysql
-      - ${XDC_MYSQL_GTID_LOG:-./log}/mysql:/var/log/mysql
+      - ${XDC_MYSQL_GTID_LOG:-./log}:/var/log/mysql
     ports:
       - ${MYSQL_G1_S1_PORT:-3316}:3306
     environment:
@@ -50,7 +50,7 @@ services:
       - ./conf/gtid/yh-slave.cnf:/etc/mysql/conf.d/yh-slave.cnf
       - ./conf/nodes/g1-s2.cnf:/etc/mysql/conf.d/yh-node-id.cnf
       - ${XDC_MYSQL_GTID_DATA:-./data}/mysql-g1-s2:/var/lib/mysql
-      - ${XDC_MYSQL_GTID_LOG:-./log}/mysql:/var/log/mysql
+      - ${XDC_MYSQL_GTID_LOG:-./log}:/var/log/mysql
     ports:
       - ${MYSQL_G1_S2_PORT:-3317}:3306
     environment:                           
@@ -69,7 +69,7 @@ services:
       - ./conf/gtid/yh-slave.cnf:/etc/mysql/conf.d/yh-slave.cnf
       - ./conf/nodes/g1-s3.cnf:/etc/mysql/conf.d/yh-node-id.cnf
       - ${XDC_MYSQL_GTID_DATA:-./data}/mysql-g1-s3:/var/lib/mysql
-      - ${XDC_MYSQL_GTID_LOG:-./log}/mysql:/var/log/mysql
+      - ${XDC_MYSQL_GTID_LOG:-./log}:/var/log/mysql
     ports:
       - ${MYSQL_G1_S3_PORT:-3318}:3306
     environment:                           
