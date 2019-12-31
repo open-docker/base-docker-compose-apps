@@ -10,6 +10,6 @@ services:
             - JAVA_MAX_HEAP=1200m
             - JAVA_MIN_HEAP=1200m
         volumes:
-            - ./data/:/nexus-data/:z
+            - ${XDC_NEXUS_DATA:-./data}:/nexus-data
         ports:
             - ${NEXUS_PORT:-8081}:8081
