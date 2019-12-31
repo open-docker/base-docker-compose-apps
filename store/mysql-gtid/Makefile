@@ -4,32 +4,12 @@
 # ####################################
 
 
-DK	:= docker
-DC	:= docker-compose
-
-
-# ####################################
-# 环境变量 AREA
-# ####################################
-# ENV_FILE := ./.env
-# MYSQL_MASTER_PASSWD := $(shell sed '/MYSQL_MASTER_PASSWD/!d;s/.*=//' $(ENV_FILE))
-# MYSQL_SLAVE_PASSWD := $(shell sed '/MYSQL_SLAVE_PASSWD/!d;s/.*=//' $(ENV_FILE))
-# MYSQL_REPL_PASSWD := $(shell sed '/MYSQL_REPL_PASSWD/!d;s/.*=//' $(ENV_FILE))
-# MYSQL_REPL_NAME := $(shell sed '/MYSQL_REPL_NAME/!d;s/.*=//' $(ENV_FILE))
-
-
 # ####################################
 # Config AREA
 # ####################################
 SVC_HOST := $(shell hostname -a)
 SERVER_GROUPS := g1 g2
 SLAVE_NAMES := s2 s3
-
-
-# ####################################
-# Config AREA
-# ####################################
-SVC_HOST := $(shell hostname -a)
 
 include ./.env
 -include ../../yh-prod.env
