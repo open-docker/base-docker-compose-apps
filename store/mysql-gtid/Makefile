@@ -28,6 +28,11 @@ PROJ_NAME := $(shell basename $(CURDIR))
 CMD := bash
 
 
+ifndef XDC_MYSQL_GTID_BACKUP
+	XDC_MYSQL_GTID_BACKUP=${HOME}/backup/mysql-gtid
+endif
+
+
 # ####################################
 # Dashboard AREA
 # ####################################
@@ -91,6 +96,7 @@ stop-g1:
 # Test AREA
 # ####################################
 test-core:
+	echo XDC_MYSQL_GTID_BACKUP=${XDC_MYSQL_GTID_BACKUP}
 
 
 # ####################################
@@ -141,6 +147,22 @@ cluster-reset-slave:
 			$(DK) exec -it mysql-$${x}-$${y} mysql -uroot -p${MYSQL_SLAVE_PASSWD} -e "RESET SLAVE"; \
 		done; \
 	done;
+
+
+# ####################################
+# Backup AREA
+# ####################################
+backup:
+	[ -d "${XDC_MYSQL_GTID_BACKUP}" ] || mkdir -p "${XDC_MYSQL_GTID_BACKUP}"
+	for x in $(SERVER_GROUPS); do \
+		$(DK) exec -it mysql-$${x}-s1 mysqldump -uroot -p${MYSQL_MASTER_PASSWD} \
+			--all-databases --triggers --routines --events 2>/dev/null > ${XDC_MYSQL_GTID_BACKUP}/mysql-$${x}-s1-${DATA_SUF}.sql; \
+		$(DK) exec -i mysql-$${x}-s1 mysql -uroot -p${MYSQL_MASTER_PASSWD} \
+			-se'show databases;' 2>/dev/null | grep "_" | grep -v "_schema" | \
+			xargs $(DK) exec -i mysql-$${x}-s1 mysqldump -uroot -p${MYSQL_MASTER_PASSWD} \
+			--databases --set-gtid-purged=OFF 2>/dev/null > ${XDC_MYSQL_GTID_BACKUP}/mysql-$${x}-s1-core-${DATA_SUF}.sql; \
+	done;
+	ls -lhrt "${XDC_MYSQL_GTID_BACKUP}"
 
 
 # ####################################
