@@ -26,6 +26,8 @@ DATA_SUF = $(shell date +"%Y.%m.%d.%H.%M.%S")
 PROJ_NAME := $(shell basename $(CURDIR))
 
 CMD := bash
+SG  := g1
+SS  := s1
 
 
 ifndef XDC_MYSQL_GTID_BACKUP
@@ -49,7 +51,7 @@ start-fg: init-dir
 	$(DC) up
 
 sh:
-	docker exec -it mysql-g1-s1 $(CMD)
+	docker exec -it mysql-$(SG)-$(SS) $(CMD)
 bash: sh
 
 test: test-core
