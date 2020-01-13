@@ -28,6 +28,7 @@ services:
     hostname: mysql-g2-s1
     container_name: mysql-g2-s1
     volumes:
+      - /etc/localtime:/etc/localtime
       - ./conf/gtid/yh-master.cnf:/etc/mysql/conf.d/yh-master.cnf
       - ./conf/nodes/g2-s1.cnf:/etc/mysql/conf.d/yh-node-id.cnf
       - ${XDC_MYSQL_GTID_DATA:-./data}/mysql-g2-s1:/var/lib/mysql
@@ -47,6 +48,7 @@ services:
     depends_on:
       - mysql-g2-s1
     volumes:
+      - /etc/localtime:/etc/localtime
       - ./conf/gtid/yh-slave.cnf:/etc/mysql/conf.d/yh-slave.cnf
       - ./conf/nodes/g2-s2.cnf:/etc/mysql/conf.d/yh-node-id.cnf
       - ${XDC_MYSQL_GTID_DATA:-./data}/mysql-g2-s2:/var/lib/mysql
@@ -66,6 +68,7 @@ services:
     depends_on:
       - mysql-g2-s1
     volumes:
+      - /etc/localtime:/etc/localtime
       - ./conf/gtid/yh-slave.cnf:/etc/mysql/conf.d/yh-slave.cnf
       - ./conf/nodes/g2-s3.cnf:/etc/mysql/conf.d/yh-node-id.cnf
       - ${XDC_MYSQL_GTID_DATA:-./data}/mysql-g2-s3:/var/lib/mysql
