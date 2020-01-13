@@ -7,7 +7,7 @@ services:
     container_name: mongo-conf-s2
     command: ${CONF_CMD}
     volumes:
-      - ./data/mongo-conf-s2:/data/configdb
+      - ${XDC_MONGO_MONGOS_DATA:-./data}/mongo-conf-s2:/data/configdb
 
   mongo-conf-s3:
     image: ${MONGO_IMG_TAG}
@@ -16,7 +16,7 @@ services:
     container_name: mongo-conf-s3
     command: ${CONF_CMD}
     volumes:
-      - ./data/mongo-conf-s3:/data/configdb
+      - ${XDC_MONGO_MONGOS_DATA:-./data}/mongo-conf-s3:/data/configdb
 
   mongo-conf-s1:
     image: ${MONGO_IMG_TAG}
@@ -25,7 +25,7 @@ services:
     container_name: mongo-conf-s1
     command: ${CONF_CMD}
     volumes:
-      - ./data/mongo-conf-s1:/data/configdb
+      - ${XDC_MONGO_MONGOS_DATA:-./data}/mongo-conf-s1:/data/configdb
     links:
       - mongo-conf-s2
       - mongo-conf-s3

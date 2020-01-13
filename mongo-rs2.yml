@@ -7,7 +7,7 @@ services:
     container_name: mongo-r2-s2
     command: mongod --replSet rs2 ${RC_CMD_OPT}
     volumes:
-      - ./data/mongo-r2-s2:/data/db
+      - ${XDC_MONGO_MONGOS_DATA:-./data}/mongo-r2-s2:/data/db
 
   mongo-r2-s3:
     image: ${MONGO_IMG_TAG}
@@ -16,7 +16,7 @@ services:
     container_name: mongo-r2-s3
     command: mongod --replSet rs2 ${RC_CMD_OPT}
     volumes:
-      - ./data/mongo-r2-s3:/data/db
+      - ${XDC_MONGO_MONGOS_DATA:-./data}/mongo-r2-s3:/data/db
 
   mongo-r2-s1:
     image: ${MONGO_IMG_TAG}
@@ -25,7 +25,7 @@ services:
     container_name: mongo-r2-s1
     command: mongod --replSet rs2 ${RC_CMD_OPT}
     volumes:
-      - ./data/mongo-r2-s1:/data/db
+      - ${XDC_MONGO_MONGOS_DATA:-./data}/mongo-r2-s1:/data/db
     links:
       - mongo-r2-s2
       - mongo-r2-s3
