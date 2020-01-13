@@ -37,8 +37,6 @@ services:
     volumes:
       - ./conf/auditbeat${BEAT_YAML_EXT}:/usr/share/auditbeat/auditbeat.yml
       - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - elastic
 
   metricbeat:
     image: ${MBEAT_IMG}
@@ -53,8 +51,6 @@ services:
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
       - /proc:/hostfs/proc:ro
       - /:/hostfs:ro
-    networks:
-      - elastic
   
   # heartbeat:
   #   image: ${HBEAT_IMG} 
@@ -64,8 +60,6 @@ services:
   #     - ELASTICSEARCH_HOSTS
   #   # volumes:
   #   #   - ./conf/heartbeat${BEAT_YAML_EXT}:/usr/share/heartbeat/heartbeat.yml
-  #   networks:
-  #     - elastic
   
   packetbeat:
     image: ${PBEAT_IMG}
@@ -76,8 +70,6 @@ services:
     privileged: true
     volumes:
       - ./conf/packetbeat${BEAT_YAML_EXT}:/usr/share/packetbeat/packetbeat.yml
-    networks:
-      - elastic
   
   filebeat:
     image: ${FBEAT_IMG}
@@ -86,13 +78,8 @@ services:
       - setup.kibana.host=${KIBANA_HOST}
       - ELASTICSEARCH_HOSTS
     ports:
-      - 9000:9000
+      - ${ELASTIC_FB_PORT:-9000}:9000
     volumes:
       - ./conf/filebeat${BEAT_YAML_EXT}:/usr/share/filebeat/filebeat.yml
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - elastic
-
-networks:
-  elastic:
